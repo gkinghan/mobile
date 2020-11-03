@@ -1,27 +1,29 @@
 <template #label>
   <div class="articleList">
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        >
-        <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" >
+    <van-pull-refresh v-model="isRefreshing" @refresh="onRefresh">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+          >
+          <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" >
 
-            <van-grid :column-num="item.cover.images.length">
-              <van-grid-item v-for="(img, index) in item.cover.images" :key="index">
-                <van-image :src="img" />
-              </van-grid-item>
-            </van-grid>
+              <van-grid :column-num="item.cover.images.length">
+                <van-grid-item v-for="(img, index) in item.cover.images" :key="index">
+                  <van-image :src="img" />
+                </van-grid-item>
+              </van-grid>
 
-          <!-- 文字说明 -->
-          <div class="meta">
-            <span>{{item.aut_name}}</span>
-            <span>{{item.comm_count}}评论</span>
-            <span>{{item.pubdate}}</span>
-          </div>
-        </van-cell>
-    </van-list>
+            <!-- 文字说明 -->
+            <div class="meta">
+              <span>{{item.aut_name}}</span>
+              <span>{{item.comm_count}}评论</span>
+              <span>{{item.pubdate}}</span>
+            </div>
+          </van-cell>
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -37,7 +39,8 @@ export default {
     return {
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+      isRefreshing: false
     }
   },
   methods: {
@@ -60,6 +63,18 @@ export default {
         this.finished = true
       }
       console.log(res)
+    },
+    // 下拉刷新
+    async onRefresh () {
+      console.log('下拉刷新了')
+      // 1. 取回最新的文章 (要传入最新的时间戳)
+      const result = await reqGetArticles(this.channel.id, Date.now())
+      // 2. 将数据覆盖到 list中
+      this.list = result.data.data.results
+      // 3. 提示更新结果
+      this.$toast.success('刷新成功')
+      // 4. 结束loading状态
+      this.isRefreshing = false
     }
   }
 }
