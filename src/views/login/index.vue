@@ -22,7 +22,7 @@
     </van-cell-group>
     <div class="btn-wrap">
         <van-button @click="login" type="info">登录</van-button>
-        <van-button @click="getInfo" type="info">获取用户信息</van-button>
+        <!-- <van-button @click="getInfo" type="info">获取用户信息</van-button> -->
     </div>
   </div>
 </template>
@@ -76,6 +76,7 @@ export default {
       this.setTokenInfo(res.data.data)
       console.log(res.data)
       this.$toast.success('登录成功')
+      this.$router.push('/')
     },
     async getInfo () {
       const res = await reqGetProfile()
