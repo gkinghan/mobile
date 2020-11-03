@@ -5,7 +5,7 @@ import store from './store'
 import '@/styles/index.scss'
 import 'amfe-flexible'
 // 按需导入 vant
-import { Button, Switch, NavBar, Field, CellGroup, Toast, Tabbar, TabbarItem, Tab, Tabs, List, cell } from 'vant'
+import { Button, Switch, NavBar, Field, CellGroup, Toast, Tabbar, TabbarItem, Tab, Tabs, List, Cell, Grid, GridItem, Image } from 'vant'
 
 import http from '@/utils/request.js'
 
@@ -20,7 +20,10 @@ Vue.use(TabbarItem)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(List)
-Vue.use(cell)
+Vue.use(Cell)
+Vue.use(Grid)
+Vue.use(GridItem)
+Vue.use(Image)
 Vue.prototype.$http = http
 Vue.config.productionTip = false
 

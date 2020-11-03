@@ -1,4 +1,4 @@
-<template>
+<template #label>
   <div class="articleList">
       <van-list
         v-model="loading"
@@ -6,7 +6,21 @@
         finished-text="没有更多了"
         @load="onLoad"
         >
-        <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" />
+        <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" >
+
+            <van-grid :column-num="item.cover.images.length">
+              <van-grid-item v-for="(img, index) in item.cover.images" :key="index">
+                <van-image :src="img" />
+              </van-grid-item>
+            </van-grid>
+
+          <!-- 文字说明 -->
+          <div class="meta">
+            <span>{{item.aut_name}}</span>
+            <span>{{item.comm_count}}评论</span>
+            <span>{{item.pubdate}}</span>
+          </div>
+        </van-cell>
     </van-list>
   </div>
 </template>
@@ -51,6 +65,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.articleList {
+  .meta {
+    span{
+      margin-right: 10px;
+    }
+  }
+}
 </style>
