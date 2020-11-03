@@ -1,24 +1,26 @@
 <template>
   <div class="home">
     <van-tabs>
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 5">内容 5</van-tab>
+      <van-tab v-for="item in channels" :key="item.id" :title="item.name">
+        <ArticleList :channel="item"></ArticleList>
 
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
 import { reqGetChannels } from '@/api/channels.js'
+import ArticleList from './articleList.vue'
 export default {
   name: 'HomeIndex',
   data () {
     return {
       channels: [] // 当前用户的频道列表
     }
+  },
+  components: {
+    ArticleList
   },
   created () {
     this.loadChannels()
@@ -28,10 +30,36 @@ export default {
       const result = await reqGetChannels()
       this.channels = result.data.data.channels
     }
+
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+.home {
+  height: 100vh;
+  padding-top: 46px;
+  box-sizing: border-box;
+  overflow: hidden;
 
+  .van-tabs {
+    height: 100%;
+    padding-top: 50px;
+    // 导航部分
+    .van-tabs__wrap {
+      position:fixed;
+      top: 46px;
+      left: 0px;
+      right: 30px;
+    }
+    // 内容部分
+    .van-tabs__content {
+      height: 100%;
+      overflow: scroll;
+      .van-tab__pane {
+        padding-bottom: 100px;
+      }
+    }
+  }
+}
 </style>
