@@ -4,7 +4,7 @@
       <van-tab v-for="item in channels" :key="item.id" :title="item.name">
         <ArticleList @show-more="handleShowMore" :channel="item"></ArticleList>
         <van-popup v-model="showMore" :style="{ width: '80%' }">
-            <MoreAction></MoreAction>
+            <MoreAction @dislike="dislike"></MoreAction>
         </van-popup>
       </van-tab>
     </van-tabs>
@@ -13,14 +13,17 @@
 
 <script>
 import { reqGetChannels } from '@/api/channels.js'
+import { reqDislikeArticle } from '@/api/article.js'
 import ArticleList from './articleList.vue'
 import MoreAction from './moreAction.vue'
 export default {
   name: 'HomeIndex',
   data () {
     return {
+      active: 0, // tabs组件正在高亮的下标
       channels: [], // 当前用户的频道列表
-      showMore: false // 是否显示弹窗
+      showMore: false, // 是否显示弹窗
+      articleId: null // 存储正在操作的id
     }
   },
   components: {
@@ -35,8 +38,23 @@ export default {
       const result = await reqGetChannels()
       this.channels = result.data.data.channels
     },
-    handleShowMore () {
+    handleShowMore (articleId) {
       this.showMore = true
+      this.articleId = articleId
+      console.log(this.articleId)
+    },
+    async dislike () {
+      // 1 发送请求
+      await reqDislikeArticle(this.articleId)
+      // console.log(res)
+      // 2 关闭弹窗
+      this.showMore = false
+      // 3 删除数据  本地删除
+      // 在父组件index.vue中 删除子组件中articleList中的数据
+      this.$eventBus.$emit('del-article', {
+        channelId: this.channels[this.active].id,
+        articleId: this.articleId
+      })
     }
 
   }

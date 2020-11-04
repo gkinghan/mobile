@@ -33,6 +33,8 @@ Vue.use(Lazyload)
 Vue.prototype.$http = http
 Vue.config.productionTip = false
 
+Vue.prototype.$eventBus = new Vue()
+
 Vue.filter('relative', (value) => {
   return getRelativeTime(value)
 })

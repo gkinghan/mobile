@@ -19,5 +19,5 @@ export function formatTime (val) {
 //  to(时间) 距离某个时间过去了多久
 //  toNow（）   距离现在过去了多久
 export function getRelativeTime (val) {
-  return dayjs(val).to(+new Date())
+  return dayjs(val).fromNow()
 }

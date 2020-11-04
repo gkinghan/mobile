@@ -21,7 +21,7 @@
               <span>{{item.comm_count}}评论</span>
               <span>{{item.pubdate | relative}}</span>
               <!-- 只有登录的用户, 才能看见这个 x 按钮 -->
-              <span @click="close" class="close" v-if="tokenInfo.token">
+              <span @click="close(item)" class="close" v-if="tokenInfo.token">
                 <van-icon name="cross"></van-icon>
               </span>
             </div>
@@ -39,7 +39,17 @@ import { mapState } from 'vuex'
 export default {
   name: 'ArticleList',
   created () {
-
+    // 监听事件
+    this.$eventBus.$on('del-article', obj => {
+      const { articleId, channelId } = obj
+      // 是否是当前频道：是, 删除; 否, 不处理
+      if (channelId !== this.channel.id) {
+        console.log('与我无关')
+        return
+      }
+      console.log('在list中找到文章id为articleId的元素, 并删除')
+      this.list = this.list.filter(item => item.art_id.toString() !== articleId)
+    })
   },
   props: ['channel'],
   data () {
@@ -86,8 +96,8 @@ export default {
       // 4. 结束loading状态
       this.isRefreshing = false
     },
-    close () {
-      this.$emit('show-more')
+    close (item) {
+      this.$emit('show-more', item.art_id.toString())
     }
   }
 }
