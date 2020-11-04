@@ -11,7 +11,7 @@
             <template #label>
               <van-grid :column-num="item.cover.images.length">
                 <van-grid-item v-for="(img, index) in item.cover.images" :key="index">
-                  <van-image :src="img" />
+                  <van-image lazy-load :src="img"></van-image>
                 </van-grid-item>
               </van-grid>
 
