@@ -2,8 +2,10 @@
   <div class="home">
     <van-tabs>
       <van-tab v-for="item in channels" :key="item.id" :title="item.name">
-        <ArticleList :channel="item"></ArticleList>
-
+        <ArticleList @show-more="handleShowMore" :channel="item"></ArticleList>
+        <van-popup v-model="showMore" :style="{ width: '80%' }">
+            <MoreAction></MoreAction>
+        </van-popup>
       </van-tab>
     </van-tabs>
   </div>
@@ -12,15 +14,18 @@
 <script>
 import { reqGetChannels } from '@/api/channels.js'
 import ArticleList from './articleList.vue'
+import MoreAction from './moreAction.vue'
 export default {
   name: 'HomeIndex',
   data () {
     return {
-      channels: [] // 当前用户的频道列表
+      channels: [], // 当前用户的频道列表
+      showMore: false // 是否显示弹窗
     }
   },
   components: {
-    ArticleList
+    ArticleList,
+    MoreAction
   },
   created () {
     this.loadChannels()
@@ -29,6 +34,9 @@ export default {
     async loadChannels () {
       const result = await reqGetChannels()
       this.channels = result.data.data.channels
+    },
+    handleShowMore () {
+      this.showMore = true
     }
 
   }
