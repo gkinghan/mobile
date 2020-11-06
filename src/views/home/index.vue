@@ -6,7 +6,7 @@
       </van-tab>
     </van-tabs>
         <!-- 小图标 -->
-        <div class="bar-btn">
+        <div @click="showChannelEdit = true" class="bar-btn">
           <van-icon name="wap-nav"/>
         </div>
         <!-- 弹出层 -->
@@ -15,12 +15,15 @@
         </van-popup>
 
         <!-- action-sheet 底部栏目管理的面板 -->
-
+        <van-action-sheet v-model="showChannelEdit" title="标题">
+          <ChannelEdit></ChannelEdit>
+        </van-action-sheet>
   </div>
 </template>
 
 <script>
 import { reqGetChannels } from '@/api/channels.js'
+import ChannelEdit from './channelEdit.vue'
 import { reqDislikeArticle, reqReportArticle } from '@/api/article.js'
 import ArticleList from './articleList.vue'
 import MoreAction from './moreAction.vue'
@@ -31,12 +34,14 @@ export default {
       active: 0, // tabs组件正在高亮的下标
       channels: [], // 当前用户的频道列表
       showMore: false, // 是否显示弹窗
-      articleId: null // 存储正在操作的id
+      articleId: null, // 存储正在操作的id
+      showChannelEdit: false
     }
   },
   components: {
     ArticleList,
-    MoreAction
+    MoreAction,
+    ChannelEdit
   },
   created () {
     this.loadChannels()
