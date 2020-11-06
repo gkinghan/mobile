@@ -4,6 +4,7 @@ import JSONbig from 'json-bigint'
 // 基于axios扩展配置
 const http = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn',
+
   // 大数转换处理
   transformResponse: [function (data) {
     // data => 原始的后台返回的 json 字符串数据
