@@ -4,15 +4,18 @@
       <van-tab v-for="item in channels" :key="item.id" :title="item.name">
         <ArticleList @show-more="handleShowMore" :channel="item"></ArticleList>
       </van-tab>
+    </van-tabs>
+        <!-- 小图标 -->
+        <div class="bar-btn">
+          <van-icon name="wap-nav"/>
+        </div>
         <!-- 弹出层 -->
         <van-popup v-model="showMore" :style="{ width: '80%' }">
             <MoreAction @report='report' @dislike="dislike"></MoreAction>
         </van-popup>
-        <!-- 小图标 -->
 
         <!-- action-sheet 底部栏目管理的面板 -->
 
-    </van-tabs>
   </div>
 </template>
 
@@ -106,5 +109,18 @@ export default {
       }
     }
   }
+  .bar-btn {
+  position: fixed;
+  right: 5px;
+  top: 57px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  opacity: 0.8;
+  z-index:1;
+  .van-icon-wap-nav{
+    font-size: 20px;
+  }
+}
 }
 </style>
