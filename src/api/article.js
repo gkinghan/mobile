@@ -33,3 +33,18 @@ export const reqDislikeArticle = (articleId) => {
     }
   })
 }
+/**
+ * 举报文章
+ * @param {*} articleId 文章编号
+ * @param {*} type 举报类型编号
+ */
+export const reqReportArticle = (articleId, type) => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/article/reports',
+    data: {
+      target: articleId,
+      type
+    }
+  })
+}

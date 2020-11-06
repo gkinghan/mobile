@@ -3,17 +3,22 @@
     <van-tabs>
       <van-tab v-for="item in channels" :key="item.id" :title="item.name">
         <ArticleList @show-more="handleShowMore" :channel="item"></ArticleList>
-        <van-popup v-model="showMore" :style="{ width: '80%' }">
-            <MoreAction @dislike="dislike"></MoreAction>
-        </van-popup>
       </van-tab>
+        <!-- 弹出层 -->
+        <van-popup v-model="showMore" :style="{ width: '80%' }">
+            <MoreAction @report='report' @dislike="dislike"></MoreAction>
+        </van-popup>
+        <!-- 小图标 -->
+
+        <!-- action-sheet 底部栏目管理的面板 -->
+
     </van-tabs>
   </div>
 </template>
 
 <script>
 import { reqGetChannels } from '@/api/channels.js'
-import { reqDislikeArticle } from '@/api/article.js'
+import { reqDislikeArticle, reqReportArticle } from '@/api/article.js'
 import ArticleList from './articleList.vue'
 import MoreAction from './moreAction.vue'
 export default {
@@ -54,6 +59,20 @@ export default {
       this.$eventBus.$emit('del-article', {
         channelId: this.channels[this.active].id,
         articleId: this.articleId
+      })
+    },
+
+    async report (typeId) {
+      console.log(typeId)
+      // 1. 调用接口
+      await reqReportArticle(this.articleId, typeId)
+      // 2. 关闭弹层
+      this.showMore = false
+      // 3. 删除文章
+
+      this.$eventBus.$emit('del-article', {
+        articleId: this.articleId,
+        channelId: this.channels[this.active].id
       })
     }
 
