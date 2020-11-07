@@ -51,19 +51,26 @@ export default {
     return {
       keyword: '', // 搜索关键字
       suggestions: [], // 联想建议
-      history: getHistory()
+      history: getHistory(), // 搜索历史
+      timeId: null
     }
   },
   methods: {
-    async getSuggestion () {
-      if (this.keyword.trim() === '') {
-        this.suggestions = []
-        return
-      }
-      // console.log('获取建议')
-      const res = await reqGetSuggestion(this.keyword)
-      console.log(res)
-      this.suggestions = res.data.data.options
+
+    // 获取联想推荐搜索词
+    getSuggestion () {
+      // 防抖处理   特征  延迟执行  会先等一等
+      clearTimeout(this.timeId)
+      this.timeId = setTimeout(async () => {
+        if (this.keyword.trim() === '') {
+          this.suggestions = []
+          return
+        }
+        // console.log('获取建议')
+        const res = await reqGetSuggestion(this.keyword)
+        console.log(res)
+        this.suggestions = res.data.data.options
+      }, 2000)
     },
     // 点击搜索  (搜索关键字)
     clickSearch () {
