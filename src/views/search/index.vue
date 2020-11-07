@@ -34,7 +34,7 @@
       <van-cell title="历史记录">
       </van-cell>
       <van-cell v-for="(item,index) in history" :key="index" :title="item">
-        <van-icon name="close" />
+        <van-icon @click="delHistory(index)" name="close" />
       </van-cell>
 
     </van-cell-group>
@@ -86,6 +86,9 @@ export default {
         this.history.splice(index, 1)
       }
       this.history.unshift(words)
+    },
+    delHistory (index) {
+      this.history.splice(index, 1)
     }
 
   },
