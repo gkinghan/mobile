@@ -1,7 +1,11 @@
 // 控制 头部导航栏 通用样式
-.van-nav-bar{
-    background-color: #1989fa;
-    .van-nav-bar__title{
-        color: white;
+
+.van-nav-bar {
+    background-color: #3196fa;
+    .van-nav-bar__title {
+      color: white;
     }
-}
+    .van-icon {
+      color: white;
+    }
+  }
