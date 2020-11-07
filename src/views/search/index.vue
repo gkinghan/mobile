@@ -31,7 +31,7 @@
 
     <!-- 搜索历史记录 -->
     <van-cell-group>
-      <van-cell title="历史记录">
+      <van-cell v-if="history.length > 0" title="历史记录">
       </van-cell>
       <van-cell v-for="(item,index) in history" :key="index" :title="item">
         <van-icon @click="delHistory(index)" name="close" />
@@ -44,13 +44,14 @@
 
 <script>
 import { reqGetSuggestion } from '@/api/search.js'
+import { getHistory, setHistory } from '@/utils/storage.js'
 export default {
   name: 'Search',
   data () {
     return {
       keyword: '', // 搜索关键字
       suggestions: [], // 联想建议
-      history: ['java', 'js', 'php']
+      history: getHistory()
     }
   },
   methods: {
@@ -86,9 +87,11 @@ export default {
         this.history.splice(index, 1)
       }
       this.history.unshift(words)
+      setHistory(this.history)
     },
     delHistory (index) {
       this.history.splice(index, 1)
+      setHistory(this.history)
     }
 
   },
