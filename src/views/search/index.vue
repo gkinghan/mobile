@@ -20,7 +20,7 @@
     </van-search>
 
     <!-- 联想建议 -->
-    <van-cell-group>
+    <van-cell-group v-if="keyword.trim() !== ''">
       <!-- icon="search"添加了一个小图标 -->
       <van-cell @click="clickSuggestion(index)" v-for="(item,index) in showSuggestions" :key="index"  icon="search" >
         <div v-html="item"></div>
@@ -30,7 +30,7 @@
     <!-- /联想建议 -->
 
     <!-- 搜索历史记录 -->
-    <van-cell-group>
+    <van-cell-group v-else>
       <van-cell v-if="history.length > 0" title="历史记录">
       </van-cell>
       <van-cell v-for="(item,index) in history" :key="index" :title="item">
