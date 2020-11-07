@@ -15,14 +15,14 @@
       v-model.trim="keyword"
     >
       <template #action>
-        <div>搜索</div>
+        <div @click="clickSearch">搜索</div>
       </template>
     </van-search>
 
     <!-- 联想建议 -->
     <van-cell-group>
       <!-- icon="search"添加了一个小图标 -->
-      <van-cell v-for="(item,index) in showSuggestions" :key="index"  icon="search" >
+      <van-cell @click="clickSuggestion(index)" v-for="(item,index) in showSuggestions" :key="index"  icon="search" >
         <div v-html="item"></div>
       </van-cell>
 
@@ -33,12 +33,10 @@
     <van-cell-group>
       <van-cell title="历史记录">
       </van-cell>
-      <van-cell title="单元格">
+      <van-cell v-for="(item,index) in history" :key="index" :title="item">
         <van-icon name="close" />
       </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close" />
-      </van-cell>
+
     </van-cell-group>
     <!-- /搜索历史记录 -->
   </div>
@@ -51,7 +49,8 @@ export default {
   data () {
     return {
       keyword: '', // 搜索关键字
-      suggestions: [] // 联想建议
+      suggestions: [], // 联想建议
+      history: ['java', 'js', 'php']
     }
   },
   methods: {
@@ -64,6 +63,29 @@ export default {
       const res = await reqGetSuggestion(this.keyword)
       console.log(res)
       this.suggestions = res.data.data.options
+    },
+    // 点击搜索  (搜索关键字)
+    clickSearch () {
+      // 添加历史记录
+      this.addHistory(this.keyword)
+    },
+    // 点击推荐建议  (追加的是 suggestion中对应项)
+    clickSuggestion (index) {
+      // 添加历史记录
+      this.addHistory(this.suggestions[index])
+    },
+    // 封装一个  添加历史的方法  unshift
+    // 删除重复的
+    addHistory (words) {
+      console.log('添加历史', words)
+      // 判断重复项
+      const index = this.history.findIndex(item => item === words)
+      if (index !== -1) {
+        // 存在相同的
+        // arr.splice(从哪开始，几个，替换项1....)
+        this.history.splice(index, 1)
+      }
+      this.history.unshift(words)
     }
 
   },
@@ -80,6 +102,7 @@ export default {
       })
       return arr
     }
+
   }
   // 2 利用v-html进行渲染
 }
