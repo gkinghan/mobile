@@ -33,3 +33,25 @@ export const reqGetProfile = () => {
     }
   })
 }
+
+// 关注
+export const reqFollow = (id) => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/user/followings',
+    data: {
+      target: id
+    }
+  })
+}
+
+/**
+ * 取关用户
+ * @param {*} id id
+ */
+export const reqUnFollow = (id) => {
+  return http({
+    method: 'delete',
+    url: `/app/v1_0/user/followings/${id}`
+  })
+}

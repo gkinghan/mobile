@@ -23,10 +23,11 @@
           <p class="time">{{article.pubdate | relative}}</p>
         </div>
         <van-button
+        @click="toggleFollow"
           round
           size="small"
           type="info"
-        >+ 关注</van-button>
+        >{{ article.is_followed ? '取关' : '+ 关注' }}</van-button>
       </div>
       <div class="content" v-html="article.content">
 
@@ -45,6 +46,7 @@
 
 <script>
 import { reqGetArticleDetail } from '@/api/article.js'
+import { reqFollow, reqUnFollow } from '@/api/user'
 export default {
   name: 'ArticleIndex',
   data () {
@@ -59,10 +61,31 @@ export default {
   methods: {
     async loadArticle () {
       const res = await reqGetArticleDetail(this.$route.params.id)
+      console.log(res)
       // 保存文章详情
       this.article = res.data.data
       // 取消加载状态
       this.loading = false
+    },
+    async toggleFollow () {
+      try {
+        if (this.article.is_followed) {
+        // true 说明已经关注了   取关操作
+          await reqUnFollow(this.article.aut_id)
+
+          this.$toast.success('取关成功')
+        } else {
+        // 没关注   关注操作
+          await reqFollow(this.article.aut_id)
+
+          this.$toast.success('关注成功')
+        }
+        // 成功后更新视图, 直接更新状态即可
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('失败')
+      }
     }
   }
 
