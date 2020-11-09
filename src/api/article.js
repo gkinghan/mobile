@@ -48,3 +48,15 @@ export const reqReportArticle = (articleId, type) => {
     }
   })
 }
+
+/**
+ * 获取文章详情数据
+ * @param {*} articleId  id
+ */
+export const reqGetArticleDetail = (articleId) => {
+  return http({
+    method: 'get',
+    url: `/app/v1_0/articles/${articleId}`
+
+  })
+}
