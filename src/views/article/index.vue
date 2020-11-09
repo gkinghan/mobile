@@ -44,7 +44,15 @@
             {{article.attitude === 1 ? '取消点赞' : '点赞'}}
         </van-button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <van-button round size="small" hairline type="danger" plain icon="delete">不喜欢</van-button>
+        <van-button
+            @click="toggleDislike"
+            round size="small"
+            hairline
+            type="danger"
+            plain
+            icon="delete">
+            {{ article.attitude === 0 ? '取消不喜欢' : '不喜欢' }}
+        </van-button>
       </div>
     </div>
     <!-- /文章详情 -->
@@ -53,7 +61,7 @@
 </template>
 
 <script>
-import { reqGetArticleDetail, reqDelLike, reqAddLike } from '@/api/article.js'
+import { reqGetArticleDetail, reqDelLike, reqAddLike, reqDeleteDisLike, reqAddDisLike } from '@/api/article.js'
 import { reqFollow, reqUnFollow } from '@/api/user'
 export default {
   name: 'ArticleIndex',
@@ -113,6 +121,20 @@ export default {
       } catch (e) {
         console.log(e)
         this.$toast.fail('失败')
+      }
+    },
+    async toggleDislike () {
+      try {
+        if (this.article.attitude === 0) {
+          await reqDeleteDisLike(this.article.art_id.toString())
+          this.article.attitude = -1
+        } else {
+          await reqAddDisLike(this.article.art_id.toString())
+          this.article.attitude = 0
+        }
+        this.$toast.success('成功')
+      } catch (e) {
+        console.log(e)
       }
     }
   }

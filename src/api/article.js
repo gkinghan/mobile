@@ -85,3 +85,24 @@ export const reqAddLike = id => {
     }
   })
 }
+
+/**
+ *  取消不喜欢
+ * @param {*} id
+ */
+export const reqDeleteDisLike = id => {
+  return http({
+    method: 'delete',
+    url: `/app/v1_0/article/dislikes/${id}`
+  })
+}
+
+export const reqAddDisLike = id => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/article/dislikes',
+    data: {
+      target: id
+    }
+  })
+}
