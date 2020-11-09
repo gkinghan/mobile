@@ -60,3 +60,28 @@ export const reqGetArticleDetail = (articleId) => {
 
   })
 }
+
+/**
+ *  取消点赞
+ * @param {*} id 文章编号id
+ */
+export const reqDelLike = (id) => {
+  return http({
+    method: 'delete',
+    url: `/app/v1_0/article/likings/${id}`
+  })
+}
+
+/**
+ * 添加点赞
+ * @param {*} id 文章id
+ */
+export const reqAddLike = id => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/article/likings',
+    data: {
+      target: id
+    }
+  })
+}

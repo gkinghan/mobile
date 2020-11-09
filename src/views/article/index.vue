@@ -34,7 +34,15 @@
       </div>
       <van-divider>END</van-divider>
       <div class="zan">
-        <van-button round size="small" hairline type="primary" plain icon="good-job-o">点赞</van-button>
+        <van-button
+            @click="toggleLike"
+            round size="small"
+            hairline
+            type="primary"
+            plain
+            :icon="article.attitude === 1 ? 'good-job' : 'good-job-o'">
+            {{article.attitude === 1 ? '取消点赞' : '点赞'}}
+        </van-button>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <van-button round size="small" hairline type="danger" plain icon="delete">不喜欢</van-button>
       </div>
@@ -45,7 +53,7 @@
 </template>
 
 <script>
-import { reqGetArticleDetail } from '@/api/article.js'
+import { reqGetArticleDetail, reqDelLike, reqAddLike } from '@/api/article.js'
 import { reqFollow, reqUnFollow } from '@/api/user'
 export default {
   name: 'ArticleIndex',
@@ -84,6 +92,26 @@ export default {
         this.article.is_followed = !this.article.is_followed
       } catch (err) {
         console.log(err)
+        this.$toast.fail('失败')
+      }
+    },
+    // 切换点赞状态 1点赞了, 取消就是恢复成 -1
+    async toggleLike () {
+      try {
+        // console.log(this.article.art_id.toString())
+        if (this.article.attitude === 1) {
+        // 点击时取消点赞
+          await reqDelLike(this.article.art_id.toString())
+          this.$toast.success('取消成功')
+          this.article.attitude = -1
+        } else {
+        // 点赞
+          await reqAddLike(this.article.art_id.toString())
+          this.$toast.success('点赞成功')
+          this.article.attitude = 1
+        }
+      } catch (e) {
+        console.log(e)
         this.$toast.fail('失败')
       }
     }
