@@ -9,6 +9,7 @@ import UserIndex from '@/views/user'
 
 import Search from '@/views/search/index.vue'
 import SearchResult from '@/views/search/result.vue'
+import Article from '@/views/article'
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,7 +25,8 @@ const routes = [
     ]
   },
   { path: '/search', component: Search },
-  { path: '/searchResult', component: SearchResult }
+  { path: '/searchResult', component: SearchResult },
+  { path: '/article/:id', component: Article }
 ]
 
 const router = new VueRouter({

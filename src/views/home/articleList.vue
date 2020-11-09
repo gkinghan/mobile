@@ -7,7 +7,7 @@
           finished-text="没有更多了"
           @load="onLoad"
           >
-          <van-cell v-for="item in list" :key="item.art_id.toString()" :title="item.title" >
+          <van-cell @click="$router.push('/article/' + item.art_id.toString())" v-for="item in list" :key="item.art_id.toString()" :title="item.title" >
             <template #label>
               <van-grid :column-num="item.cover.images.length">
                 <van-grid-item v-for="(img, index) in item.cover.images" :key="index">
