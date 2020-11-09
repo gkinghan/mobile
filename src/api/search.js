@@ -14,3 +14,19 @@ export const reqGetSuggestion = (q) => {
     }
   })
 }
+
+/**
+ * 获取搜索结果
+ * @param {*} page  页码  第几页
+ * @param {*} q 搜索关键字
+ */
+export const reqGetSearchList = (page, q) => {
+  return http({
+    method: 'get',
+    url: '/app/v1_0/search',
+    params: {
+      page,
+      q
+    }
+  })
+}

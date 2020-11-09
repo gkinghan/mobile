@@ -33,7 +33,7 @@
     <van-cell-group v-else>
       <van-cell v-if="history.length > 0" title="历史记录">
       </van-cell>
-      <van-cell v-for="(item,index) in history" :key="index" :title="item">
+      <van-cell @click="clickHistory(item)" v-for="(item,index) in history" :key="index" :title="item">
         <van-icon @click="delHistory(index)" name="close" />
       </van-cell>
 
@@ -75,7 +75,10 @@ export default {
     // 点击搜索  (搜索关键字)
     clickSearch () {
       // 添加历史记录
+      if (this.keyword === '') return
+
       this.addHistory(this.keyword)
+      this.$router.push('/searchResult?keyword=' + this.keyword)
     },
     // 点击推荐建议  (追加的是 suggestion中对应项)
     clickSuggestion (index) {
@@ -99,6 +102,10 @@ export default {
     delHistory (index) {
       this.history.splice(index, 1)
       setHistory(this.history)
+    },
+    clickHistory (item) {
+      this.addHistory(item)
+      this.$router.push('/searchResult?keyword=' + item)
     }
 
   },

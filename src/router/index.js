@@ -7,7 +7,8 @@ import QuestionIndex from '@/views/question'
 import VideoIndex from '@/views/video'
 import UserIndex from '@/views/user'
 
-import Search from '@/views/search'
+import Search from '@/views/search/index.vue'
+import SearchResult from '@/views/search/result.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,7 +23,8 @@ const routes = [
       { path: '/user', component: UserIndex }
     ]
   },
-  { path: '/search', component: Search }
+  { path: '/search', component: Search },
+  { path: '/searchResult', component: SearchResult }
 ]
 
 const router = new VueRouter({
