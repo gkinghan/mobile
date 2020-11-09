@@ -56,6 +56,8 @@
       </div>
     </div>
     <!-- /文章详情 -->
+    <!-- 评论 -->
+    <ArticleComment :article-id="$route.params.id"></ArticleComment>
 
   </div>
 </template>
@@ -63,6 +65,7 @@
 <script>
 import { reqGetArticleDetail, reqDelLike, reqAddLike, reqDeleteDisLike, reqAddDisLike } from '@/api/article.js'
 import { reqFollow, reqUnFollow } from '@/api/user'
+import ArticleComment from './comment.vue'
 export default {
   name: 'ArticleIndex',
   data () {
@@ -70,6 +73,9 @@ export default {
       loading: true, // 控制加载中的 loading 状态
       article: { } // 默认空对象
     }
+  },
+  components: {
+    ArticleComment
   },
   created () {
     this.loadArticle()
