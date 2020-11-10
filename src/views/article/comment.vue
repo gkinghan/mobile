@@ -70,7 +70,7 @@ export default {
     async onLoad () {
       // console.log('加载更多')
       const res = await reqGetComment(this.articleId, this.offset)
-      const arr = res.data.data.result
+      const arr = res.data.data.results
       this.list = [...this.list, ...arr]
       this.loading = false
       if (arr.length === 0) {
@@ -85,10 +85,10 @@ export default {
         this.list.unshift(res.data.data.new_obj)
         console.log(this.list)
         this.content = ''
-        this.$totast.success('发布成功')
+        this.$toast.success('发布成功')
       } catch (e) {
         console.log(e)
-        this.$totast.fail('失败，评论已关闭')
+        this.$toast.fail('失败，评论已关闭')
       }
     }
   }
