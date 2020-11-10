@@ -32,3 +32,28 @@ export const reqGetComment = (articleId, offset) => {
     }
   })
 }
+
+/**
+ * 评论点赞
+ * @param {*} commentId 评论id
+ */
+export const reqAddCommentLike = commentId => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/comment/likings',
+    data: {
+      target: commentId
+    }
+  })
+}
+
+/**
+ * 取消评论点赞
+ * @param {*} commentId
+ */
+export const reqDeleteCommentLike = commentId => {
+  return http({
+    method: 'delete',
+    url: `/app/v1_0/comment/likings/${commentId}`
+  })
+}

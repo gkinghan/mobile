@@ -21,7 +21,7 @@
               <span>{{item.comm_count}}评论</span>
               <span>{{item.pubdate | relative}}</span>
               <!-- 只有登录的用户, 才能看见这个 x 按钮 -->
-              <span @click="close(item)" class="close" v-if="tokenInfo.token">
+              <span @click.stop="close(item)" class="close" v-if="tokenInfo.token">
                 <van-icon name="cross"></van-icon>
               </span>
             </div>
