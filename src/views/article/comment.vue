@@ -24,7 +24,7 @@
       <p style="color: #363636;">{{item.content}}</p>
       <p>
         <span style="margin-right: 10px;">{{ item.pubdate | relative }}</span>
-        <van-button size="mini" type="default">回复</van-button>
+        <van-button @click="clickShowReply" size="mini" type="default">回复</van-button>
       </p>
     </div>
     <van-icon slot="right-icon" name="like-o" />
@@ -43,18 +43,27 @@
       </van-field>
     </van-cell-group>
     <!-- /发布评论 -->
+    <!-- 弹出层 -->
+    <van-popup v-model="isShowReply" round position="bottom" :style="{ height: '85%' }">
+      <comment-reply></comment-reply>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { reqAddComment, reqGetComment } from '@/api/comment.js'
+import commentReply from './commentReply.vue'
 
 export default {
   name: 'ArticleComment',
+  components: {
+    commentReply
+  },
   props: {
     articleId: {
       type: String,
       required: true
+
     }
   },
   data () {
@@ -62,7 +71,9 @@ export default {
       content: '', // 内容
       list: [], // 评论列表
       loading: false, // 上拉加载更多的 loading
-      finished: false // 是否加载结束
+      finished: false, // 是否加载结束
+      offset: null,
+      isShowReply: false
     }
   },
 
@@ -90,6 +101,9 @@ export default {
         console.log(e)
         this.$toast.fail('失败，评论已关闭')
       }
+    },
+    clickShowReply () {
+      this.isShowReply = true
     }
   }
 }
