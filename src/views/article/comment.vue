@@ -24,7 +24,7 @@
       <p style="color: #363636;">{{item.content}}</p>
       <p>
         <span style="margin-right: 10px;">{{ item.pubdate | relative }}</span>
-        <van-button @click="clickShowReply" size="mini" type="default">回复</van-button>
+        <van-button @click="clickShowReply(item)" size="mini" type="default">回复</van-button>
       </p>
     </div>
     <van-icon @click="toggleCommentLike(item)" slot="right-icon" :name="item.is_liking ? 'like' :' like-o'" />
@@ -45,7 +45,7 @@
     <!-- /发布评论 -->
     <!-- 弹出层 -->
     <van-popup v-model="isShowReply" round position="bottom" :style="{ height: '85%' }">
-      <comment-reply></comment-reply>
+      <comment-reply :article-id='articleId' :comment="currentComment"></comment-reply>
     </van-popup>
   </div>
 </template>
@@ -73,7 +73,8 @@ export default {
       loading: false, // 上拉加载更多的 loading
       finished: false, // 是否加载结束
       offset: null,
-      isShowReply: false
+      isShowReply: false,
+      currentComment: {} // 表示当前的回复组件，回复的是哪个评论
     }
   },
 
@@ -84,12 +85,12 @@ export default {
       const res = await reqGetComment(this.articleId, this.offset)
       const arr = res.data.data.results
       this.list = [...this.list, ...arr]
+      this.offset = res.data.data.last_id
       this.loading = false
       if (arr.length === 0) {
         this.finished = true
       }
       // 更新 offset
-      this.offset = res.data.data.last_id
     },
     async addComment () {
       if (this.content === '') return
@@ -121,8 +122,10 @@ export default {
         this.$toast.fail('操作失败')
       }
     },
-    clickShowReply () {
+    clickShowReply (item) {
       this.isShowReply = true
+      // 更新正在回复的组件
+      this.currentComment = item
     }
   }
 }

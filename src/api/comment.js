@@ -57,3 +57,38 @@ export const reqDeleteCommentLike = commentId => {
     url: `/app/v1_0/comment/likings/${commentId}`
   })
 }
+
+/**
+ * 获取文章评论回复
+ * @param {*} commentId 回复的评论id
+ * @param {*} offset 获取评论数据的偏移量，值为评论id，表示从此id的数据向后取，不传表示从第一页开始读取数据
+ */
+export const reqGetCommentsReplys = (commentId, offset) => {
+  return http({
+    method: 'get',
+    url: '/app/v1_0/comments',
+    params: {
+      type: 'c',
+      source: commentId,
+      offset
+    }
+  })
+}
+
+/**
+ *  添加文章评论回复
+ * @param {*} commentId 评论id
+ * @param {*} content 内容
+ * @param {*} articleId 文章id
+ */
+export const reqAddCommentReply = (commentId, content, articleId) => {
+  return http({
+    method: 'post',
+    url: '/app/v1_0/comments',
+    data: {
+      target: commentId,
+      content,
+      art_id: articleId
+    }
+  })
+}
