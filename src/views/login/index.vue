@@ -71,12 +71,17 @@ export default {
         message: '加载中...',
         forbidClick: true
       })
-
-      const res = await reqLogin(this.mobile, this.code)
-      this.setTokenInfo(res.data.data)
-      console.log(res.data)
-      this.$toast.success('登录成功')
-      this.$router.push('/')
+      try {
+        const res = await reqLogin(this.mobile, this.code)
+        this.setTokenInfo(res.data.data)
+        console.log(res.data)
+        this.$toast.success('登录成功')
+        const backto = this.$route.query.backto || '/'
+        this.$router.push(backto)
+      } catch (e) {
+        console.log(e)
+        this.$toast.fail('有误')
+      }
     },
     async getInfo () {
       const res = await reqGetProfile()
