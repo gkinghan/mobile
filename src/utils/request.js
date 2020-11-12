@@ -1,6 +1,8 @@
 import axios from 'axios'
 import store from '@/store/index.js'
 import JSONbig from 'json-bigint'
+import router from '../router'
+
 // 基于axios扩展配置
 const http = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn',
@@ -35,4 +37,65 @@ http.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
+// 添加响应拦截器
+http.interceptors.response.use(function (response) {
+  // 对响应数据做点什么 (成功响应) response 就是成功的响应 res
+  return response
+}, async function (error) {
+  // 对响应错误做点什么 (失败响应) 处理401错误
+  // console.dir(error)
+  if (error.response.status === 401) {
+    console.log('token过期了, 一小时过去了, 需要通过refresh_token去刷新token')
+    // 获取 refresh_token, 判断是否存在, 存在就去刷新token
+    const refreshToken = store.state.tokenInfo.refresh_token
+    if (refreshToken) {
+      try {
+        console.log('存在refreshToken, 需要进行刷新token操作')
+        // (1) 发送请求, 进行刷新token操作, 获取新的token
+        // 注意: 这边发请求, 不用http实例, 用它会自动在请求前帮你携带token(会覆盖你的refresh_token)
+        // 这边, 直接用 axios 发送请求
+        const res = await axios({
+          method: 'put',
+          url: 'http://ttapi.research.itcast.cn/app/v1_0/authorizations',
+          // 请求头中携带refresh_token信息
+          headers: {
+            Authorization: `Bearer ${refreshToken}`
+          }
+        })
+        const newToken = res.data.data.token
+        // (2) 将新token更新到vuex中
+        store.commit('setTokenInfo', {
+          refresh_token: refreshToken,
+          token: newToken
+        })
+        // (3) 重新发送刚才的请求, http, 自动携带token (携带的是新token)
+        //     error.config就是之前用于请求的配置对象, 可以直接给http使用
+        return http(error.config)
+      } catch {
+        // refresh_token 过期了, 跳转到登录页
+        // 清除过期的token对象
+        store.commit('removeToken')
+        // 跳转到登录页, 跳转完, 将来跳回来
+        router.push({
+          path: '/login',
+          query: {
+            backto: router.currentRoute.fullPath
+          }
+        })
+      }
+    } else {
+      // 没有refreshToken, 直接去登录, 将来还能跳回来
+      // router.currentRoute 指向当前路由信息对象 === 等价于之前页面中用的 this.$route
+      // 清除本地token, 跳转登录 (无意义的本地token内容, 要清除)
+      store.commit('removeToken')
+      router.push({
+        path: '/login',
+        query: {
+          backto: router.currentRoute.fullPath
+        }
+      })
+    }
+  }
+  return Promise.reject(error)
+})
 export default http

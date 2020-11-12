@@ -55,3 +55,12 @@ export const reqUnFollow = (id) => {
     url: `/app/v1_0/user/followings/${id}`
   })
 }
+/**
+ * 获取用户自己信息
+ */
+export const reqGetUser = () => {
+  return http({
+    method: 'get',
+    url: '/app/v1_0/user'
+  })
+}
