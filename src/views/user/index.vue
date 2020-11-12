@@ -51,6 +51,8 @@
 
 <script>
 import { reqGetUser } from '@/api/user.js'
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'UserIndex',
   data () {
@@ -62,10 +64,25 @@ export default {
     this.loadUserInfo()
   },
   methods: {
+    ...mapMutations(['removeItem']),
     async loadUserInfo () {
       const res = await reqGetUser()
       this.user = res.data.data
       // console.log(res)
+    },
+    logout () {
+      // 通过方法调用
+      this.$dialog.confirm({
+        title: '温馨提示',
+        message: '确定吗？'
+      }).then(() => {
+        // 清除本地token 对象信息
+        this.removeItem()
+        // 跳转登陆页
+        this.$router.push('/login')
+      }).catch(() => {
+
+      })
     }
   }
 }
