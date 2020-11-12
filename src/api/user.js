@@ -64,3 +64,29 @@ export const reqGetUser = () => {
     url: '/app/v1_0/user'
   })
 }
+/**
+ * 修改用户个人信息
+ * obj {
+ *   name: 昵称,
+ *   birthday: 生日
+ *   gender: 性别
+ * }
+ */
+export const reqUpdateUserInfo = (obj) => {
+  return http({
+    method: 'patch',
+    url: '/app/v1_0/user/profile',
+    data: obj
+  })
+}
+/**
+ * 更新头像
+ * @param {*} formData 传入一个formData, 利用formData收集图片的信息
+ */
+export const reqUpdatePhoto = (formData) => {
+  return http({
+    method: 'patch',
+    url: '/app/v1_0/user/photo',
+    data: formData
+  })
+}

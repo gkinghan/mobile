@@ -5,12 +5,13 @@ import store from './store'
 import '@/styles/index.scss'
 import 'amfe-flexible'
 // 按需导入 vant
-import { Button, Switch, NavBar, Field, CellGroup, Toast, Tabbar, TabbarItem, Tab, Tabs, List, Cell, Grid, GridItem, Image, PullRefresh, Popup, Icon, Lazyload, ActionSheet, Search, Loading, Divider, Tag, Row, Col, Dialog } from 'vant'
+import { Button, Switch, NavBar, Field, CellGroup, Toast, Tabbar, TabbarItem, Tab, Tabs, List, Cell, Grid, GridItem, Image, PullRefresh, Popup, Icon, Lazyload, ActionSheet, Search, Loading, Divider, Tag, Row, Col, Dialog, DatetimePicker } from 'vant'
 
 import http from '@/utils/request.js'
 
 import { getRelativeTime } from '@/utils/date-time.js'
 
+Vue.use(DatetimePicker)
 Vue.use(Dialog)
 Vue.use(Col)
 Vue.use(Row)
