@@ -13,6 +13,7 @@ import Article from '@/views/article'
 
 import UserProfile from '@/views/user/profile.vue'
 import store from '@/store'
+import UserChat from '@/views/user/chat.vue'
 
 Vue.use(VueRouter)
 
@@ -31,7 +32,8 @@ const routes = [
   { path: '/search', component: Search },
   { path: '/searchResult', component: SearchResult },
   { path: '/article/:id', component: Article },
-  { path: '/userProfile', component: UserProfile }
+  { path: '/userProfile', component: UserProfile },
+  { path: '/userChat', component: UserChat }
 ]
 
 const router = new VueRouter({
